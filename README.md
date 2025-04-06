@@ -1,38 +1,40 @@
-# sv
+### Rayan Magniac, Maitriya Sramaner, Fady Mikhael
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+# Générateur de Carte de Visite
 
-## Creating a project
+Ce projet est une application web développée avec **Svelte** permettant de créer des cartes de visite personnalisées et élégantes. Les utilisateurs peuvent saisir leurs informations (titre, nom, profession, email, téléphone) et choisir parmi trois styles prédéfinis : Classique, Moderne et Professionnel. Une fois la carte configurée, elle peut être téléchargée au format PDF.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Utilisation
+1. Remplissez les champs du formulaire (titre, nom, profession, email, téléphone).
+2. Sélectionnez un style dans la liste déroulante.
+3. Visualisez l'aperçu de la carte en temps réel.
+4. Cliquez sur "Télécharger en PDF" pour sauvegarder votre carte.
 
-```bash
-# create a new project in the current directory
-npx sv create
+## Prérequis
+Avant de commencer, assurez-vous d'avoir les outils suivants installés sur votre machine :
+- **Node.js** (version 16 ou supérieure recommandée)
+- **npm** (inclus avec Node.js)
 
-# create a new project in my-app
-npx sv create my-app
-```
+## Installation
 
-## Developing
+1. **Installer les dépendances** :
+   Utilisez npm pour installer les packages nécessaires :
+   ```bash
+   npm install
+   ```
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+2. **Dépendances principales** :
+   Les dépendances suivantes seront automatiquement installées via `npm install` : 
+   - `jspdf` : Pour générer le fichier PDF.
+   - `html2canvas` : Pour convertir la carte en image avant de l'intégrer dans le PDF.
 
-```bash
-npm run dev
+   Installez-les individuellement si nécessaire :
+   ```bash
+   npm install jspdf html2canvas
+   ```
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+3. **Lancer le projet en mode développement** :
+   ```bash
+   npm run dev
+   ```
+   Cela démarrera un serveur local (généralement sur `http://localhost:5173`)

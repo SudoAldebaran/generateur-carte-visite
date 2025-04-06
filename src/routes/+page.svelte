@@ -23,32 +23,65 @@
     // Styles disponibles
     const styles = {
         classique: {
-            name: "Classique", headerBg: "#ffffff", headerColor: "#000000", bodyBg: "#f0f0f0", bodyColor: "#000000",
-            borderRadius: "0px", separator: true, boxShadow: "none", border: "1px solid #000000", pattern: "none",
-            headerFont: "'Times New Roman', serif", bodyFont: "Arial, sans-serif", nameSize: "2rem", professionSize: "1.3rem",
-            nameWeight: "bold", professionWeight: "normal", iconStyle: "classic",
+            name: "Classique",
+            headerBg: "#ffffff",
+            headerColor: "#000000",
+            bodyBg: "#f0f0f0",
+            bodyColor: "#000000",
+            borderRadius: "0px",
+            separator: true,
+            boxShadow: "none",
+            border: "1px solid #000000",
+            pattern: "none",
+            headerFont: "'Times New Roman', serif",
+            bodyFont: "Arial, sans-serif",
+            nameSize: "2rem",
+            professionSize: "1.3rem",
+            nameWeight: "bold",
+            professionWeight: "normal",
+            iconStyle: "classic",
         },
         moderne: {
-            name: "Moderne", headerBg: "#ffffff", headerColor: "#000000", bodyBg: "#ffffff", bodyColor: "#000000",
-            borderRadius: "0px", separator: false, boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", border: "none", pattern: "geometric",
-            headerFont: "'Montserrat', sans-serif", bodyFont: "'Open Sans', sans-serif", nameSize: "2.2rem", professionSize: "1.4rem",
-            nameWeight: "900", professionWeight: "normal", iconStyle: "modern",
+            name: "Moderne",
+            headerBg: "#ffffff",
+            headerColor: "#000000",
+            bodyBg: "#ffffff",
+            bodyColor: "#000000",
+            borderRadius: "0px",
+            separator: false,
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            border: "none",
+            pattern: "geometric",
+            headerFont: "'Montserrat', sans-serif",
+            bodyFont: "'Open Sans', sans-serif",
+            nameSize: "2.2rem",
+            professionSize: "1.4rem",
+            nameWeight: "900",
+            professionWeight: "normal",
+            iconStyle: "modern",
         },
         professionnel: {
-            name: "Professionnel", headerBg: "#2c3e50", headerColor: "#03224c", bodyBg: "#ecf0f1", bodyColor: "#03224c",
-            borderRadius: "6px", separator: false, boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)", border: "none", pattern: "none",
-            headerFont: "'Helvetica Neue', sans-serif", bodyFont: "'Roboto', sans-serif", nameSize: "1.8rem", professionSize: "1.2rem",
-            nameWeight: "600", professionWeight: "500", iconStyle: "professional",
+            name: "Professionnel",
+            headerBg: "#2c3e50",
+            headerColor: "#03224c",
+            bodyBg: "#ecf0f1",
+            bodyColor: "#03224c",
+            borderRadius: "6px",
+            separator: false,
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
+            border: "none",
+            pattern: "none",
+            headerFont: "'Helvetica Neue', sans-serif",
+            bodyFont: "'Roboto', sans-serif",
+            nameSize: "1.8rem",
+            professionSize: "1.2rem",
+            nameWeight: "600",
+            professionWeight: "500",
+            iconStyle: "professional",
         },
     };
 
     $: currentStyle = styles[selectedStyle];
-
-    function getIcons(style) {
-        return {};
-    }
-
-    $: icons = getIcons(currentStyle);
 </script>
 
 <main>
