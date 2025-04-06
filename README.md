@@ -9,6 +9,7 @@ Ce projet est une application web développée avec **Svelte** permettant de cr�
 2. Sélectionnez un style dans la liste déroulante.
 3. Visualisez l'aperçu de la carte en temps réel.
 4. Cliquez sur "Télécharger en PDF" pour sauvegarder votre carte.
+5. Possiblité de pré-visualiser les anciennes cartes et de les télécharger
 
 ## Prérequis
 Avant de commencer, assurez-vous d'avoir les outils suivants installés sur votre machine :

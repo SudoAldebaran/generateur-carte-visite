@@ -3,16 +3,83 @@
     import html2canvas from "html2canvas";
     import '../style.css'
 
-    // Génération du PDF
+    let cardHistory = []; // Stocke les cartes générées
+    let enlargedCard = null; // Carte actuellement agrandie
+
+    // Charge l'historique depuis localStorage si dispo
+    if (typeof window !== 'undefined') {
+        const storedHistory = localStorage.getItem('cardHistory');
+        if (storedHistory) {
+            cardHistory = JSON.parse(storedHistory);
+        }
+    }
+
+    // Sauvegarde dans localStorage à chaque changement
+    $: if (typeof window !== 'undefined' && cardHistory) {
+        localStorage.setItem('cardHistory', JSON.stringify(cardHistory));
+    }
+
+    // Convertit un blob en base64
+    async function blobToBase64(blob) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result.split(',')[1]);
+            reader.readAsDataURL(blob);
+        });
+    }
+
+    // Convertit base64 en blob pour téléchargement
+    async function base64ToBlob(base64) {
+        const response = await fetch(`data:application/pdf;base64,${base64}`);
+        return await response.blob();
+    }
+
+    // Génère le PDF et met à jour l'historique
     async function generatePDF() {
         const carteElement = document.querySelector(".carte");
         const canvas = await html2canvas(carteElement, { scale: 2, useCORS: true });
         const imgData = canvas.toDataURL("image/png");
         const pdf = new jsPDF({ orientation: "landscape", unit: "px", format: [canvas.width, canvas.height] });
         pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+        
+        const pdfBlob = pdf.output('blob');
+        const pdfBase64 = await blobToBase64(pdfBlob);
+
+        const cardData = {
+            id: Date.now(),
+            titre: titre || "",
+            nom: nom || "exemple",
+            profession: profession || "",
+            email: email || "",
+            telephone: telephone || "",
+            style: selectedStyle,
+            pdfBlobBase64: pdfBase64,
+            preview: imgData
+        };
+
+        cardHistory = [...cardHistory, cardData];
         pdf.save(`Carte-de-visite-${nom || "exemple"}.pdf`);
     }
 
+    async function downloadExistingCard(card) {
+        if (card.pdfBlobBase64) {
+            const blob = await base64ToBlob(card.pdfBlobBase64);
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `Carte-de-visite-${card.nom}.pdf`;
+            link.click();
+        }
+    }
+
+    function enlargeCard(card) {
+        enlargedCard = card;
+    }
+
+    function closeEnlargedCard() {
+        enlargedCard = null;
+    }
+
+    // Variables pour le formulaire
     let titre = "";
     let nom = "";
     let email = "";
@@ -20,7 +87,7 @@
     let profession = "";
     let selectedStyle = "classique";
 
-    // Styles disponibles
+    // Styles des cartes
     const styles = {
         classique: {
             name: "Classique",
@@ -88,8 +155,8 @@
     <h1>Générateur de Carte de Visite</h1>
     <p class="subtitle">Créez une carte élégante en quelques secondes</p>
 
+    <!-- Formulaire et aperçu -->
     <div class="container">
-        <!-- Formulaire de saisie -->
         <div class="formulaire">
             <div class="input-group">
                 <label for="titre">Titre</label>
@@ -127,7 +194,6 @@
             </div>
         </div>
 
-        <!-- Aperçu de la carte -->
         <div
             class="carte"
             style="
@@ -165,20 +231,17 @@
                     <div class="bottom-green-shape"></div>
                 </div>
             {/if}
-
             <div class="carte-content">
                 <div class="carte-header">
                     <h2>{titre ? titre + " " : ""}{nom || "Jean Yves"}</h2>
                     <h3>{profession || "Professeur"}</h3>
                 </div>
-
                 {#if currentStyle.separator}
                     <hr
                         class:separator-classique={selectedStyle === "classique"}
                         class:separator-professionnel={selectedStyle === "professionnel"}
                     />
                 {/if}
-
                 <div class="carte-body">
                     <div class="contact-info">
                         <p>{email || "jean@entreprise.fr"}</p>
@@ -190,4 +253,70 @@
     </div>
 
     <button class="download-btn" on:click={generatePDF}>Télécharger en PDF</button>
+
+    <!-- Historique des cartes -->
+    {#if cardHistory.length > 0}
+        <div class="history-section">
+            <h2>Cartes précédemment générées</h2>
+            <div class="history-grid">
+                {#each cardHistory as card (card.id)}
+                    <div class="history-item">
+                        <img 
+                            src={card.preview} 
+                            alt="Aperçu de la carte" 
+                            class="history-preview"
+                        />
+                        <div class="history-info">
+                            <p><strong>{card.titre} {card.nom}</strong></p>
+                            <p>{card.profession}</p>
+                            <button 
+                                class="history-preview-btn" 
+                                on:click={() => enlargeCard(card)}
+                            >
+                                Prévisualiser
+                            </button>
+                            <button 
+                                class="history-download-btn" 
+                                on:click={() => downloadExistingCard(card)}
+                            >
+                                Télécharger à nouveau
+                            </button>
+                        </div>
+                    </div>
+                {/each}
+            </div>
+        </div>
+    {/if}
+
+    <!-- Modale pour aperçu agrandi -->
+    {#if enlargedCard}
+        <div 
+            class="enlarged-modal" 
+            role="dialog" 
+            aria-label="Prévisualisation de la carte agrandie"
+            on:click={closeEnlargedCard}
+            on:keydown={(e) => { if (e.key === 'Escape') closeEnlargedCard(); }}
+            tabindex="0"
+        >
+            <div 
+                class="enlarged-card" 
+                role="presentation"
+                on:click|stopPropagation
+                on:keydown|stopPropagation
+            >
+                <img 
+                    src={enlargedCard.preview} 
+                    alt="Carte agrandie de {enlargedCard.titre} {enlargedCard.nom}" 
+                    class="enlarged-preview"
+                />
+                <button 
+                    class="close-btn" 
+                    on:click={closeEnlargedCard}
+                    on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') closeEnlargedCard(); }}
+                >
+                    Fermer
+                </button>
+            </div>
+        </div>
+    {/if}
 </main>
