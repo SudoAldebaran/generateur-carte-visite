@@ -1,16 +1,14 @@
 <script>
+    let titre = ""; // Nouvelle variable pour le titre
     let nom = "";
     let email = "";
     let telephone = "";
     let profession = "";
-    let facebook = "";
-    let twitter = "";
-    let instagram = "";
     let selectedStyle = "classique"; // Style par défaut
 
-    // Définition des styles prédéfinis
     const styles = {
         classique: {
+            name: "Classique",
             headerBg: "#ffffff",
             headerColor: "#000000",
             bodyBg: "#f0f0f0",
@@ -20,8 +18,16 @@
             boxShadow: "none",
             border: "1px solid #000000",
             pattern: "none",
+            headerFont: "'Times New Roman', serif",
+            bodyFont: "Arial, sans-serif",
+            nameSize: "2rem",
+            professionSize: "1.3rem",
+            nameWeight: "bold",
+            professionWeight: "normal",
+            iconStyle: "classic",
         },
         moderne: {
+            name: "Moderne",
             headerBg: "#ffffff",
             headerColor: "#000000",
             bodyBg: "#ffffff",
@@ -31,22 +37,42 @@
             boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
             border: "none",
             pattern: "geometric",
+            headerFont: "'Montserrat', sans-serif",
+            bodyFont: "'Open Sans', sans-serif",
+            nameSize: "2.2rem",
+            professionSize: "1.4rem",
+            nameWeight: "900",
+            professionWeight: "normal",
+            iconStyle: "modern",
         },
         professionnel: {
+            name: "Professionnel",
             headerBg: "#2c3e50",
-            headerColor: "#ecf0f1",
+            headerColor: "#03224c",
             bodyBg: "#ecf0f1",
-            bodyColor: "#2c3e50",
+            bodyColor: "#03224c",
             borderRadius: "6px",
             separator: true,
             boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
             border: "none",
             pattern: "none",
+            headerFont: "'Helvetica Neue', sans-serif",
+            bodyFont: "'Roboto', sans-serif",
+            nameSize: "1.8rem",
+            professionSize: "1.2rem",
+            nameWeight: "600",
+            professionWeight: "500",
+            iconStyle: "professional",
         },
     };
 
-    // Mise à jour du style courant en fonction de la sélection
     $: currentStyle = styles[selectedStyle];
+
+    function getIcons(style) {
+        return {}; // Plus d'icônes
+    }
+
+    $: icons = getIcons(currentStyle);
 </script>
 
 <main>
@@ -54,8 +80,18 @@
     <p class="subtitle">Créez une carte élégante en quelques secondes</p>
 
     <div class="container">
-        <!-- Formulaire pour modifier les informations et choisir le style -->
         <div class="formulaire">
+            <!-- Ajout du champ pour le titre -->
+            <div class="input-group">
+                <label for="titre">Titre</label>
+                <select id="titre" bind:value={titre}>
+                    <option value="">Aucun</option>
+                    <option value="M.">M.</option>
+                    <option value="Mme.">Mme.</option>
+                    <option value="Me">Me</option>
+                    <option value="Dr">Dr</option>
+                </select>
+            </div>
             <div class="input-group">
                 <label for="nom">Nom</label>
                 <input
@@ -92,36 +128,6 @@
                     placeholder="022 - 786 127 890"
                 />
             </div>
-
-            <div class="input-group">
-                <label for="facebook">Facebook</label>
-                <input
-                    id="facebook"
-                    type="text"
-                    bind:value={facebook}
-                    placeholder="/fb_fanpage"
-                />
-            </div>
-            <div class="input-group">
-                <label for="twitter">Twitter</label>
-                <input
-                    id="twitter"
-                    type="text"
-                    bind:value={twitter}
-                    placeholder="@tw_account"
-                />
-            </div>
-            <div class="input-group">
-                <label for="instagram">Instagram</label>
-                <input
-                    id="instagram"
-                    type="text"
-                    bind:value={instagram}
-                    placeholder="@ig_account"
-                />
-            </div>
-
-            <!-- Sélection du style -->
             <div class="input-group">
                 <label for="style">Choisissez un style</label>
                 <select id="style" bind:value={selectedStyle}>
@@ -132,33 +138,39 @@
             </div>
         </div>
 
-        <!-- Carte de visite qui affiche le style sélectionné -->
         <div
             class="carte"
             style="
-        --header-bg: {currentStyle.headerBg};
-        --header-color: {currentStyle.headerColor};
-        --body-bg: {currentStyle.bodyBg};
-        --body-color: {currentStyle.bodyColor};
-        --border-radius: {currentStyle.borderRadius};
-        --box-shadow: {currentStyle.boxShadow};
-        --border: {currentStyle.border};
-      "
+                --header-bg: {currentStyle.headerBg};
+                --header-color: {currentStyle.headerColor};
+                --body-bg: {currentStyle.bodyBg};
+                --body-color: {currentStyle.bodyColor};
+                --border-radius: {currentStyle.borderRadius};
+                --box-shadow: {currentStyle.boxShadow};
+                --border: {currentStyle.border};
+                --header-font: {currentStyle.headerFont};
+                --body-font: {currentStyle.bodyFont};
+                --name-size: {currentStyle.nameSize};
+                --profession-size: {currentStyle.professionSize};
+                --name-weight: {currentStyle.nameWeight};
+                --profession-weight: {currentStyle.professionWeight};
+            "
+            class:carte-classique={selectedStyle === "classique"}
+            class:carte-moderne={selectedStyle === "moderne"}
+            class:carte-professionnel={selectedStyle === "professionnel"}
         >
             {#if currentStyle.pattern === "geometric"}
                 <div class="pattern-container">
-                    <!-- Partie supérieure -->
                     <div class="top-left-curve"></div>
                     <div class="top-right-curve"></div>
-
-                    <!-- Partie centrale -->
                     <div class="center-square"></div>
                     <div class="center-bordeaux-circle"></div>
                     <div class="plume-bleu"></div>
+                    <div class="plume-orange"></div>
+                    <div class="plume-bas"></div>
                     <div class="quart-cercle"></div>
+                    <div class="quart-cercle-droit"></div>
                     <div class="demi-cercle"></div>
-
-                    <!-- Partie inférieure -->
                     <div class="bottom-right-curve"></div>
                     <div class="bottom-green-shape"></div>
                 </div>
@@ -166,44 +178,25 @@
 
             <div class="carte-content">
                 <div class="carte-header">
-                    <h2>{nom || "Sabrina Smith"}</h2>
+                    <!-- Affichage du titre avant le nom -->
+                    <h2>{titre ? titre + " " : ""}{nom || "Sabrina Smith"}</h2>
                     <h3>{profession || "Nutricioniste"}</h3>
                 </div>
 
                 {#if currentStyle.separator}
-                    <hr />
+                    <hr
+                        class:separator-classique={selectedStyle ===
+                            "classique"}
+                        class:separator-professionnel={selectedStyle ===
+                            "professionnel"}
+                    />
                 {/if}
 
                 <div class="carte-body">
                     <div class="contact-info">
-                        <p>
-                            <span class="icon">✉️</span>
-                            {email || "sabrina@the-company.com"}
-                        </p>
-                        <p>
-                            <span class="icon">📞</span>
-                            {telephone || "022 - 786 127 890"}
-                        </p>
+                        <p>{email || "sabrina@the-company.com"}</p>
+                        <p>{telephone || "022 - 786 127 890"}</p>
                     </div>
-
-                    {#if currentStyle.pattern === "geometric"}
-                        <div class="social-links">
-                            <p>
-                                <span class="social-icon fb-icon">📘</span>
-                                {facebook || "/fb_fanpage"}
-                            </p>
-                            <p>
-                                <span class="social-icon tw-icon">🐦</span>
-                                {twitter || "@tw_account"}
-                            </p>
-                            {#if instagram}
-                                <p>
-                                    <span class="social-icon ig-icon">📷</span>
-                                    {instagram}
-                                </p>
-                            {/if}
-                        </div>
-                    {/if}
                 </div>
             </div>
         </div>
@@ -283,6 +276,22 @@
         border-color: #3498db;
     }
 
+    .carte {
+        position: relative;
+        flex: 1;
+        min-width: 300px;
+        width: 450px;
+        height: 250px;
+        background: var(--body-bg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        border: var(--border);
+        overflow: hidden;
+        transition:
+            transform 0.3s,
+            box-shadow 0.3s;
+    }
+
     .carte:hover {
         transform: translateY(-5px);
     }
@@ -295,6 +304,87 @@
         flex-direction: column;
     }
 
+    /* Style Classique */
+    .carte-classique .carte-header {
+        margin: 20px 0 0 20px;
+        text-align: left;
+    }
+
+    .carte-classique .carte-header h2 {
+        margin: 0;
+        font-size: var(--name-size);
+        font-weight: var(--name-weight);
+        font-family: var(--header-font);
+        color: var(--header-color);
+    }
+
+    .carte-classique .carte-header h3 {
+        margin: 5px 0 0 0;
+        font-size: var(--profession-size);
+        font-weight: var(--profession-weight);
+        font-family: var(--header-font);
+        color: var(--header-color);
+    }
+
+    .carte-classique .carte-body {
+        padding: 10px 20px;
+        font-family: var(--body-font);
+        text-align: left;
+    }
+
+    .carte-classique .contact-info p {
+        margin: 8px 0;
+        font-size: 1rem;
+        color: var(--body-color);
+    }
+
+    .carte-classique .separator-classique {
+        border-top: 1px solid #000000;
+        margin: 10px 0;
+    }
+
+    /* Style Moderne */
+    .carte-moderne .carte-header {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        text-align: right;
+    }
+
+    .carte-moderne .carte-header h2 {
+        margin: 0;
+        font-size: var(--name-size);
+        font-weight: var(--name-weight);
+        font-family: var(--header-font);
+        color: var(--header-color);
+    }
+
+    .carte-moderne .carte-header h3 {
+        margin: 5px 0 0 0;
+        font-size: var(--profession-size);
+        font-weight: var(--profession-weight);
+        font-family: var(--header-font);
+        color: var(--header-color);
+    }
+
+    .carte-moderne .carte-body {
+        padding: 20px;
+        font-family: var(--body-font);
+        text-align: left;
+    }
+
+    .carte-moderne .contact-info {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+    }
+
+    .carte-moderne .contact-info p {
+        margin: 8px 0;
+        font-size: 1rem;
+        color: var(--body-color);
+    }
+
     .pattern-container {
         position: absolute;
         top: 0;
@@ -305,7 +395,6 @@
         overflow: hidden;
     }
 
-    /* Formes géométriques pour le style moderne */
     .top-left-curve {
         position: absolute;
         top: -80px;
@@ -313,7 +402,7 @@
         width: 160px;
         height: 160px;
         border-radius: 50%;
-        background-color: #93a8ac; /* violet */
+        background-color: #f4e04d;
     }
 
     .top-right-curve {
@@ -323,14 +412,24 @@
         width: 140px;
         height: 140px;
         border-radius: 50%;
-        background-color: #93a8ac; /* violet */
+        background-color: #93a8ac;
+    }
+
+    .plume-orange {
+        position: absolute;
+        width: 70px;
+        height: 50px;
+        background-color: #f2ed6f;
+        border-radius: 100px 0px 100px 0;
+        top: 0;
+        right: 0px;
     }
 
     .plume-bleu {
         position: absolute;
-        width: 120px;
-        height: 50px;
-        background-color: #d7ceb2;
+        width: 80px;
+        height: 60px;
+        background-color: #14342b;
         border-radius: 100px 0px 100px 0;
         top: 0;
         right: 0px;
@@ -339,111 +438,97 @@
     .demi-cercle {
         position: absolute;
         width: 70px;
-        height: 40px;
-        background-color: #d49e21;
+        height: 35px;
+        background-color: #14342b;
         border-radius: 0 0 100px 100px;
-        top: 100px;
-        right: 40px;
+        top: 60px;
+        right: 80px;
     }
 
     .quart-cercle {
         position: absolute;
-        width: 80px;
-        height: 80px;
-        background-color: #ff0000;
-        border-radius: 80px 0 0 0;
+        width: 35px;
+        height: 40px;
+        background-color: #93a8ac;
+        border-radius: 0px 80px 0 0;
         bottom: 0;
-        left: 10px;
+        right: 130px;
+    }
+
+    .plume-bas {
+        position: absolute;
+        width: 30px;
+        height: 40px;
+        background-color: #add8c7;
+        border-radius: 100px 0px 100px 0;
+        bottom: 0px;
+        right: 165px;
     }
 
     .center-square {
         position: absolute;
-        top: 66px;
-        right: 18%;
+        top: 25px;
+        right: 115px;
         width: 35px;
         height: 35px;
-        background-color: #add8c7; /* vert clair */
+        background-color: #add8c7;
     }
 
-    .carte-header h2 {
-        margin: 0;
-        font-size: 2.2rem;
-        font-weight: 900;
-        color: #000;
-    }
-
-    .carte-header h3 {
-        margin: 0;
-        font-size: 1.4rem;
-        font-weight: normal;
-        color: #000;
-    }
-
-    .carte {
-        position: relative; /* Référence pour les éléments absolus */
-        flex: 1;
-        min-width: 300px;
-        width: 450px;
-        height: 250px;
-        background: var(--body-bg);
-        border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow);
-        border: var(--border);
-        overflow: hidden;
-        transition: transform 0.3s;
-    }
-
-    .carte-header {
-        margin: 100px 0 10px 30px; /* Déplace avec margin */
-        text-align: left;
-    }
-
-    .carte-body {
-        padding: 20px 0 15px 38px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%;
-    }
-
-    .social-links {
+    .quart-cercle-droit {
         position: absolute;
-        right: 40px;
-        bottom: 20px; /* Ou top: 20px si tu préfères en haut */
-        text-align: right;
+        width: 35px;
+        height: 35px;
+        background-color: #f4e04d;
+        border-radius: 80px 0 0 0;
+        top: 25px;
+        right: 80px;
     }
 
-    .contact-info {
-        margin-top: 10px;
+    /* Style Professionnel */
+    .carte-professionnel .carte-header {
+        margin: 50px 0 0 0;
+        text-align: center;
     }
 
-    .carte-body p {
-        margin: 8px 0;
+    .carte-professionnel .carte-header h2 {
+        margin: 0;
+        font-size: var(--name-size);
+        font-weight: var(--name-weight);
+        font-family: var(--header-font);
+        color: var(--header-color);
+    }
+
+    .carte-professionnel .carte-header h3 {
+        margin: 5px 0 0 0;
+        font-size: var(--profession-size);
+        font-weight: var(--profession-weight);
+        font-family: var(--header-font);
+        color: var(--header-color);
+    }
+
+    .carte-professionnel .carte-body {
+        padding: 15px;
+        font-family: var(--body-font);
+        text-align: center;
+    }
+
+    .carte-professionnel .contact-info {
+        position: absolute;
+        bottom: 40px; /* Place le conteneur en bas */
+        left: 50%; /* Centre horizontalement */
+        transform: translateX(-50%); /* Ajuste pour centrer */
+        text-align: center; /* Centre le texte à l'intérieur */
+    }
+
+    .carte-professionnel .contact-info p {
+        margin: 5px 0; /* Ajoute un espacement vertical entre les éléments */
         font-size: 1rem;
-        color: #000;
+        color: var(--body-color);
     }
 
-    .icon {
-        margin-right: 15px;
-        color: #333;
-        font-size: 1.2rem;
-        display: inline-block;
-        width: 20px;
-        vertical-align: middle;
-    }
-
-    .social-icon {
-        margin-right: 12px;
-        font-size: 1rem;
-        display: inline-block;
-        width: 20px;
-        vertical-align: middle;
-    }
-
-    hr {
-        border: none;
-        border-top: 1px solid #bdc3c7;
-        margin: 10px 0;
+    .carte-professionnel .separator-professionnel {
+        border-top: 1px solid #ecf0f1;
+        margin: 15px 20px;
     }
 
     @media (max-width: 600px) {
