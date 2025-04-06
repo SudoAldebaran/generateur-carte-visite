@@ -52,7 +52,7 @@
             bodyBg: "#ecf0f1",
             bodyColor: "#03224c",
             borderRadius: "6px",
-            separator: true,
+            separator: false,
             boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
             border: "none",
             pattern: "none",
@@ -81,7 +81,6 @@
 
     <div class="container">
         <div class="formulaire">
-            <!-- Ajout du champ pour le titre -->
             <div class="input-group">
                 <label for="titre">Titre</label>
                 <select id="titre" bind:value={titre}>
@@ -94,39 +93,19 @@
             </div>
             <div class="input-group">
                 <label for="nom">Nom</label>
-                <input
-                    id="nom"
-                    type="text"
-                    bind:value={nom}
-                    placeholder="Sabrina Smith"
-                />
+                <input id="nom" type="text" bind:value={nom} placeholder="Sabrina Smith" />
             </div>
             <div class="input-group">
                 <label for="profession">Profession</label>
-                <input
-                    id="profession"
-                    type="text"
-                    bind:value={profession}
-                    placeholder="Nutricioniste"
-                />
+                <input id="profession" type="text" bind:value={profession} placeholder="Nutricioniste" />
             </div>
             <div class="input-group">
                 <label for="email">Email</label>
-                <input
-                    id="email"
-                    type="email"
-                    bind:value={email}
-                    placeholder="sabrina@the-company.com"
-                />
+                <input id="email" type="email" bind:value={email} placeholder="sabrina@the-company.com" />
             </div>
             <div class="input-group">
                 <label for="telephone">Téléphone</label>
-                <input
-                    id="telephone"
-                    type="tel"
-                    bind:value={telephone}
-                    placeholder="022 - 786 127 890"
-                />
+                <input id="telephone" type="tel" bind:value={telephone} placeholder="022 - 786 127 890" />
             </div>
             <div class="input-group">
                 <label for="style">Choisissez un style</label>
@@ -178,17 +157,14 @@
 
             <div class="carte-content">
                 <div class="carte-header">
-                    <!-- Affichage du titre avant le nom -->
                     <h2>{titre ? titre + " " : ""}{nom || "Sabrina Smith"}</h2>
                     <h3>{profession || "Nutricioniste"}</h3>
                 </div>
 
                 {#if currentStyle.separator}
                     <hr
-                        class:separator-classique={selectedStyle ===
-                            "classique"}
-                        class:separator-professionnel={selectedStyle ===
-                            "professionnel"}
+                        class:separator-classique={selectedStyle === "classique"}
+                        class:separator-professionnel={selectedStyle === "professionnel"}
                     />
                 {/if}
 
@@ -213,7 +189,7 @@
     }
 
     main {
-        max-width: 900px;
+        width: 900px; /* Taille fixe au lieu de max-width */
         margin: 40px auto;
         text-align: center;
     }
@@ -234,12 +210,11 @@
         display: flex;
         justify-content: space-between;
         gap: 40px;
-        flex-wrap: wrap;
+        width: 900px; /* Taille fixe */
     }
 
     .formulaire {
-        flex: 1;
-        min-width: 300px;
+        width: 400px; /* Taille fixe au lieu de flex */
         background: #2c3e50;
         padding: 20px;
         border-radius: 12px;
@@ -260,7 +235,8 @@
 
     input,
     select {
-        width: 100%;
+        width: 90%; /* Réduit la largeur à 90% du conteneur */
+        max-width: 350px; /* Limite la largeur maximale */
         padding: 10px;
         font-size: 1rem;
         border: 1px solid #7f8c8d;
@@ -269,6 +245,7 @@
         transition: border-color 0.3s;
         background-color: #34495e;
         color: #ecf0f1;
+        margin: 0 auto; /* Centre les champs si nécessaire */
     }
 
     input:focus,
@@ -276,20 +253,18 @@
         border-color: #3498db;
     }
 
+    /* Carte avec taille fixe */
     .carte {
         position: relative;
-        flex: 1;
-        min-width: 300px;
-        width: 450px;
-        height: 250px;
+        width: 450px; /* Taille fixe */
+        height: 250px; /* Taille fixe */
         background: var(--body-bg);
         border-radius: var(--border-radius);
         box-shadow: var(--box-shadow);
         border: var(--border);
         overflow: hidden;
-        transition:
-            transform 0.3s,
-            box-shadow 0.3s;
+        transform-origin: top left; /* Point de départ pour la réduction */
+        transition: transform 0.3s ease;
     }
 
     .carte:hover {
@@ -299,6 +274,7 @@
     .carte-content {
         position: relative;
         z-index: 2;
+        width: 100%;
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -306,7 +282,9 @@
 
     /* Style Classique */
     .carte-classique .carte-header {
-        margin: 20px 0 0 20px;
+        position: absolute;
+        top: 15px;
+        left: 20px;
         text-align: left;
     }
 
@@ -327,7 +305,9 @@
     }
 
     .carte-classique .carte-body {
-        padding: 10px 20px;
+        position: absolute;
+        top: 130px;
+        left: 20px;
         font-family: var(--body-font);
         text-align: left;
     }
@@ -339,8 +319,12 @@
     }
 
     .carte-classique .separator-classique {
+        position: absolute;
+        top: 110px;
+        left: 20px;
+        right: 20px;
         border-top: 1px solid #000000;
-        margin: 10px 0;
+        margin: 0;
     }
 
     /* Style Moderne */
@@ -368,15 +352,11 @@
     }
 
     .carte-moderne .carte-body {
-        padding: 20px;
-        font-family: var(--body-font);
-        text-align: left;
-    }
-
-    .carte-moderne .contact-info {
         position: absolute;
         top: 20px;
         left: 20px;
+        font-family: var(--body-font);
+        text-align: left;
     }
 
     .carte-moderne .contact-info p {
@@ -486,7 +466,10 @@
 
     /* Style Professionnel */
     .carte-professionnel .carte-header {
-        margin: 50px 0 0 0;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        right: 0;
         text-align: center;
     }
 
@@ -507,34 +490,26 @@
     }
 
     .carte-professionnel .carte-body {
-        padding: 15px;
+        position: absolute;
+        bottom: 40px;
+        left: 0;
+        right: 0;
         font-family: var(--body-font);
         text-align: center;
     }
 
-    .carte-professionnel .contact-info {
-        position: absolute;
-        bottom: 40px; /* Place le conteneur en bas */
-        left: 50%; /* Centre horizontalement */
-        transform: translateX(-50%); /* Ajuste pour centrer */
-        text-align: center; /* Centre le texte à l'intérieur */
-    }
-
     .carte-professionnel .contact-info p {
-        margin: 5px 0; /* Ajoute un espacement vertical entre les éléments */
+        margin: 5px 0;
         font-size: 1rem;
         color: var(--body-color);
     }
 
     .carte-professionnel .separator-professionnel {
+        position: absolute;
+        top: 100px;
+        left: 20px;
+        right: 20px;
         border-top: 1px solid #ecf0f1;
-        margin: 15px 20px;
-    }
-
-    @media (max-width: 600px) {
-        .container {
-            flex-direction: column;
-            align-items: center;
-        }
+        margin: 0;
     }
 </style>
