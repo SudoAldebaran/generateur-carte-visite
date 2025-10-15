@@ -1,4 +1,4 @@
-### Rayan Magniac, Maitriya Sramaner, Fady Mikhael
+
 
 # Générateur de Carte de Visite
 
